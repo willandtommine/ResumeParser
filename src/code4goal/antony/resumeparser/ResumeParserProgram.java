@@ -12,6 +12,7 @@ import java.util.Iterator;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.BasicConfigurator;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.AutoDetectParser;
@@ -107,9 +108,9 @@ public class ResumeParserProgram {
 		
 		
 		Out.prln("Initialising basic system...  " + Gate.getBuiltinCreoleDir().getPath());
-
+		BasicConfigurator.configure();
 		Gate.init();
-		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/PLUGINS1/"));
+		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/PLUGINS1/ANNIE/"));
 		Out.prln("...basic system initialised");
 System.out.print("Before we init shitty annie");
 		// initialise ANNIE (this may take several minutes)
