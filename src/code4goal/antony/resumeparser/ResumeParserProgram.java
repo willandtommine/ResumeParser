@@ -80,8 +80,8 @@ public class ResumeParserProgram {
 		
 		
 		if (Gate.getPluginsHome() == null) {
-			System.out.println("changing plugins:/var/task/PLUGINS1");
-			Gate.setPluginsHome(new File("/var/task/./PLUGINS1/"));
+			System.out.println("changing plugins:/var/task/plugins");
+			Gate.setPluginsHome(new File("/var/task/./plugins/"));
 		}
 		if (Gate.getGateHome() == null) {
 			System.out.println("changing home : " );
@@ -94,7 +94,7 @@ public class ResumeParserProgram {
 		if (Gate.getBuiltinCreoleDir() == null) {
 			System.out.println("changing Creole ");
 			for(File g: f.listFiles()) {
-				if(g.getAbsolutePath().contains("PLUGINS1")) {
+				if(g.getAbsolutePath().contains("plugins")) {
 					for(File h:g.listFiles()) {
 						if(h.getAbsolutePath().contains("ANNIE")) {
 							Gate.setBuiltinCreoleDir(h.toURI().toURL());
@@ -110,7 +110,7 @@ public class ResumeParserProgram {
 		Out.prln("Initialising basic system...  " + Gate.getBuiltinCreoleDir().getPath());
 		BasicConfigurator.configure();
 		Gate.init();
-		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/PLUGINS1/ANNIE/"));
+		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/ANNIE/"));
 		Out.prln("...basic system initialised");
 System.out.print("Before we init shitty annie");
 		// initialise ANNIE (this may take several minutes)

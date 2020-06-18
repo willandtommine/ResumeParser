@@ -39,22 +39,6 @@ public class Handler implements RequestHandler<S3Event, Context> {
 		System.out.println("first line, 2:57");
 
 		
-		File p = new File("/var/task/./plugins1");
-		File prev = new File("/var/task/");
-		File creoleFile = new File("file:/var/task/./plugins/ANNIE/");
-		
-		for(File s:prev.listFiles()) {
-			if(s!=null) {
-				System.out.println(s.getAbsolutePath());
-				if(s.getAbsolutePath().contains("creole")) {
-					creoleFile = new File(s.getAbsolutePath());
-					System.out.println(s.getAbsolutePath()+"<--- Shes the one?");
-				}
-			}else {
-				System.out.println("shes null");
-			}
-			
-		}
 		
 		
 		
