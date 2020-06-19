@@ -1,3 +1,9 @@
 <CREOLE-DIRECTORY>
   <JAR SCAN="true">doc-normalizer.jar</JAR>
+   <RESOURCE>
+		<CLASS> gate.corpora.CorpusImpl </CLASS>		
+	</RESOURCE>
+  <RESOURCE>
+		<CLASS> gate.corpora.DocumentImpl </CLASS>		
+	</RESOURCE>
 </CREOLE-DIRECTORY>

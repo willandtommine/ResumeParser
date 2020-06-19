@@ -111,6 +111,10 @@ public class ResumeParserProgram {
 		BasicConfigurator.configure();
 		Gate.init();
 		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/ANNIE/"));
+		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/Keyphrase_Extraction_Algorithm/"));
+		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/Information_Retrieval/"));
+		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/DocumentNormalizer/"));
+		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/Crowd_Sourcing/"));
 		Out.prln("...basic system initialised");
 System.out.print("Before we init shitty annie");
 		// initialise ANNIE (this may take several minutes)
@@ -119,6 +123,7 @@ System.out.print("Before we init shitty annie");
 		System.out.print("after inniting");
 		// create a GATE corpus and add a document for each command-line
 		// argument
+
 		Corpus corpus = Factory.newCorpus("Annie corpus");
 		String current = new File(".").getAbsolutePath();
 		URL u = file.toURI().toURL();

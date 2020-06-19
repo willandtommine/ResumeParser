@@ -2,6 +2,12 @@
 <!-- $Id: creole.xml 10304 2009-03-25 11:13:06Z ian_roberts $ -->
 
 <CREOLE>
+ <RESOURCE>
+		<CLASS> gate.corpora.CorpusImpl </CLASS>		
+	</RESOURCE>
+  <RESOURCE>
+		<CLASS> gate.corpora.DocumentImpl </CLASS>		
+	</RESOURCE>
   <RESOURCE>
     <JAR>lib/weka-3.4.6.jar</JAR>
     <JAR>kea.jar</JAR>

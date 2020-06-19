@@ -26,6 +26,12 @@
       <ICON>binoculars.gif</ICON>
     </RESOURCE>
     <!-- Viewer -->
+     <RESOURCE>
+		<CLASS> gate.corpora.CorpusImpl </CLASS>		
+	</RESOURCE>
+  <RESOURCE>
+		<CLASS> gate.corpora.DocumentImpl </CLASS>		
+	</RESOURCE>
     <RESOURCE>
       <NAME>Search Results</NAME>
       <CLASS>gate.gui.SearchPRViewer</CLASS>

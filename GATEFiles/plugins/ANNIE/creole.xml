@@ -25,6 +25,10 @@
 		<CLASS>gate.creole.gazetteer.SharedDefaultGazetteer</CLASS>
 	</RESOURCE>
 
+    
+    <RESOURCE>
+		<CLASS>gate.creole.ConditionalSerialAnalyserController</CLASS>
+	</RESOURCE>
 	<!-- creole.xml for Hash Gazetteer (ex Natural)-->
 	<RESOURCE>
 		<CLASS>com.ontotext.gate.gazetteer.HashGazetteer</CLASS>
@@ -55,6 +59,14 @@
 		<CLASS>gate.creole.POSTagger</CLASS>		
 	</RESOURCE>
 
+   <RESOURCE>
+		<CLASS> gate.corpora.CorpusImpl </CLASS>		
+	</RESOURCE>
+
+	<RESOURCE>
+		<CLASS> gate.corpora.DocumentImpl </CLASS>		
+	</RESOURCE>
+    
 	<!-- creole.xml for namematch -->
 	<RESOURCE>
 		<CLASS>gate.creole.orthomatcher.OrthoMatcher</CLASS>

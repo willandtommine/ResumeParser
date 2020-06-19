@@ -54,6 +54,7 @@
                 <entry>
                   <string>annotationTypes</string>
                   <null/>
+                  
                 </entry>
                 <entry>
                   <string>document</string>
@@ -509,7 +510,7 @@
                 <entry>
                   <string>grammarURL</string>
                   <gate.util.persistence.PersistenceManager-URLHolder>
-                    <urlString>$relpath$../JAPEGrammars/main.jape</urlString>
+                    <urlString>file:/var/task/./main.jape</urlString>
                   </gate.util.persistence.PersistenceManager-URLHolder>
                 </entry>
                 <entry>
