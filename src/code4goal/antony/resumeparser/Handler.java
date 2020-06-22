@@ -66,11 +66,11 @@ public class Handler implements RequestHandler<S3Event, Context> {
 		String key_name = record.getS3().getObject().getUrlDecodedKey();
 		
 
-		//final AmazonS3Client s3 = (AmazonS3Client) AmazonS3ClientBuilder.standard().build();
+		final AmazonS3Client s3 = (AmazonS3Client) AmazonS3ClientBuilder.standard().build();
 
 		try {
 
-			//S3Object o = s3.getObject(bucket_name, key_name);
+			S3Object o = s3.getObject(bucket_name, key_name);
 
 			String ext = FilenameUtils.getExtension(key_name);
 			String outputFileFormat = "";
@@ -86,17 +86,17 @@ public class Handler implements RequestHandler<S3Event, Context> {
 				return null;
 			}
 
-			String OUTPUT_FILE_NAME = FilenameUtils.removeExtension(key_name) + outputFileFormat;
+			
 			ContentHandler handler = new ToXMLContentHandler();
 
-			//InputStream stream = o.getObjectContent();
+			InputStream stream = o.getObjectContent();
 			//String url = "https://" + destBktName + ".s3.amazonaws.com/" + OUTPUT_FILE_NAME;
 
 			AutoDetectParser parser = new AutoDetectParser();
 			Metadata metadata = new Metadata();
 			try {
 
-				//parser.parse(stream, handler, metadata);
+				parser.parse(stream, handler, metadata);
 				FileWriter htmlFileWriter = new FileWriter(storage);
 				htmlFileWriter.write(handler.toString());
 				htmlFileWriter.flush();
@@ -107,14 +107,26 @@ public class Handler implements RequestHandler<S3Event, Context> {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (TikaException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			} finally {
+				try {
+					stream.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 
 		} catch (AmazonServiceException e) {
 			System.err.println(e.getErrorMessage());
 			System.exit(1);
 		}
-		System.out.println(" after file was made");
+		
 
 		try {
 
@@ -122,7 +134,8 @@ public class Handler implements RequestHandler<S3Event, Context> {
 			JSONObject parsedJSON = ResumeParserProgram.loadGateAndAnnie(storage);
 			System.out.println("just got some parsed Json");
 			System.out.println(parsedJSON.toJSONString());
-			return (Context) parsedJSON;
+			
+			return null;
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

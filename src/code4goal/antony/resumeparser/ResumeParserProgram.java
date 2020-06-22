@@ -80,19 +80,19 @@ public class ResumeParserProgram {
 		
 		
 		if (Gate.getPluginsHome() == null) {
-			System.out.println("changing plugins:/var/task/plugins");
+			
 			Gate.setPluginsHome(new File("/var/task/./plugins/"));
 		}
 		if (Gate.getGateHome() == null) {
-			System.out.println("changing home : " );
+			
 			Gate.setGateHome(new File("/var/task/./" )) ;
 		}
 		if (Gate.getSiteConfigFile() == null) {
-			System.out.println("changing gate");
+			
 			Gate.setSiteConfigFile(new File("/var/task/gate.xml"));
 		}
 		if (Gate.getBuiltinCreoleDir() == null) {
-			System.out.println("changing Creole ");
+			
 			for(File g: f.listFiles()) {
 				if(g.getAbsolutePath().contains("plugins")) {
 					for(File h:g.listFiles()) {
@@ -107,20 +107,19 @@ public class ResumeParserProgram {
 		}
 		
 		
-		Out.prln("Initialising basic system...  " + Gate.getBuiltinCreoleDir().getPath());
-		BasicConfigurator.configure();
+		
+		//BasicConfigurator.configure();
 		Gate.init();
 		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/ANNIE/"));
 		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/Keyphrase_Extraction_Algorithm/"));
 		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/Information_Retrieval/"));
 		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/DocumentNormalizer/"));
 		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/Crowd_Sourcing/"));
-		Out.prln("...basic system initialised");
-System.out.print("Before we init shitty annie");
+		
 		// initialise ANNIE (this may take several minutes)
 		Annie annie = new Annie();
 		annie.initAnnie();
-		System.out.print("after inniting");
+		
 		// create a GATE corpus and add a document for each command-line
 		// argument
 
