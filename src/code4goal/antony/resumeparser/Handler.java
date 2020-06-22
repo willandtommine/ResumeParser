@@ -1,6 +1,7 @@
 package code4goal.antony.resumeparser;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import java.net.MalformedURLException;
@@ -11,9 +12,9 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.S3Event;
 import com.amazonaws.services.s3.event.S3EventNotification;
-/*
- * import java.net.URL;
- * import com.amazonaws.AmazonServiceException;
+
+import java.net.URL;
+import com.amazonaws.AmazonServiceException;
 import java.io.InputStream;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.tika.exception.TikaException;
@@ -27,7 +28,7 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 import com.amazonaws.services.s3.model.S3Object;
-*/
+
 import gate.Gate;
 import gate.util.GateException;
 
@@ -38,23 +39,38 @@ public class Handler implements RequestHandler<S3Event, Context> {
 
 		System.out.println("first line, 2:57");
 
-		
-		
+		File storage = new File("../.././tmp/store.txt");
+		if(storage.exists()) {
+			storage.delete();
+			try {
+				storage.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}else {
+			try {
+				storage.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		
 
 
-		//S3EventNotification.S3EventNotificationRecord record = (s3event).getRecords().get(0);
+		S3EventNotification.S3EventNotificationRecord record = (s3event).getRecords().get(0);
 
-		//String bucket_name = record.getS3().getBucket().getName();
-		//String key_name = record.getS3().getObject().getUrlDecodedKey();
+		String bucket_name = record.getS3().getBucket().getName();
+		String key_name = record.getS3().getObject().getUrlDecodedKey();
 		
 
 		//final AmazonS3Client s3 = (AmazonS3Client) AmazonS3ClientBuilder.standard().build();
-/*
+
 		try {
 
-			S3Object o = s3.getObject(bucket_name, key_name);
+			//S3Object o = s3.getObject(bucket_name, key_name);
 
 			String ext = FilenameUtils.getExtension(key_name);
 			String outputFileFormat = "";
@@ -73,35 +89,25 @@ public class Handler implements RequestHandler<S3Event, Context> {
 			String OUTPUT_FILE_NAME = FilenameUtils.removeExtension(key_name) + outputFileFormat;
 			ContentHandler handler = new ToXMLContentHandler();
 
-			InputStream stream = o.getObjectContent();
-			String url = "https://" + destBktName + ".s3.amazonaws.com/" + OUTPUT_FILE_NAME;
+			//InputStream stream = o.getObjectContent();
+			//String url = "https://" + destBktName + ".s3.amazonaws.com/" + OUTPUT_FILE_NAME;
 
 			AutoDetectParser parser = new AutoDetectParser();
 			Metadata metadata = new Metadata();
 			try {
 
-				parser.parse(stream, handler, metadata);
-
-				stream.close();
+				//parser.parse(stream, handler, metadata);
+				FileWriter htmlFileWriter = new FileWriter(storage);
+				htmlFileWriter.write(handler.toString());
+				htmlFileWriter.flush();
+				htmlFileWriter.close();
+				
 
 				// s3.putObject(destBktName, OUTPUT_FILE_NAME, handler.toString());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (TikaException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			} finally {
-				try {
-					stream.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					System.exit(1);
-				}
 			}
 
 		} catch (AmazonServiceException e) {
@@ -109,11 +115,11 @@ public class Handler implements RequestHandler<S3Event, Context> {
 			System.exit(1);
 		}
 		System.out.println(" after file was made");
-*/
+
 		try {
 
 			
-			JSONObject parsedJSON = ResumeParserProgram.loadGateAndAnnie(new File("okbeast.com"));
+			JSONObject parsedJSON = ResumeParserProgram.loadGateAndAnnie(storage);
 			System.out.println("just got some parsed Json");
 			System.out.println(parsedJSON.toJSONString());
 			return (Context) parsedJSON;
