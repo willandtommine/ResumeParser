@@ -1,4 +1,4 @@
-package code4goal.antony.resumeparser;
+package com.flexhire;
 
 import java.io.*;
 import gate.*;

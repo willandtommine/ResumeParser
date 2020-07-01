@@ -1,4 +1,4 @@
-package code4goal.antony.resumeparser;
+package com.flexhire;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,8 +33,7 @@ import org.apache.tika.sax.ToXMLContentHandler;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
-import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+
 
 
 import gate.util.GateException;
@@ -90,7 +89,7 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 		
 		
 
-		final AmazonS3Client s3 = (AmazonS3Client) AmazonS3ClientBuilder.standard().build();
+		
 
 		try {
 

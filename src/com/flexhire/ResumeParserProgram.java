@@ -1,26 +1,20 @@
-package code4goal.antony.resumeparser;
+package com.flexhire;
 
 import static gate.Utils.*;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
+
 import java.io.IOException;
-import java.io.InputStream;
+
 import java.net.URL;
 import java.util.Iterator;
 
-import org.apache.commons.io.FilenameUtils;
+
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.sax.ToXMLContentHandler;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
+
 
 import gate.Annotation;
 import gate.AnnotationSet;
@@ -33,45 +27,9 @@ import gate.util.GateException;
 import gate.util.Out;
 
 public class ResumeParserProgram {
-	public static File parseToHTMLUsingApacheTikka(String file)
-			throws IOException, SAXException, TikaException {
-		
-		// determine extension
-		String ext = FilenameUtils.getExtension(file);
-		String outputFileFormat = "";
-		// ContentHandler handler;
-		if (ext.equalsIgnoreCase("html") | ext.equalsIgnoreCase("pdf")
-				| ext.equalsIgnoreCase("doc") | ext.equalsIgnoreCase("docx")) {
-			outputFileFormat = ".html";
-			// handler = new ToXMLContentHandler();
-		} else if (ext.equalsIgnoreCase("txt") | ext.equalsIgnoreCase("rtf")) {
-			outputFileFormat = ".txt";
-		} else {
-			System.out.println("Input format of the file " + file
-					+ " is not supported.");
-			return null;
-		}
-		String OUTPUT_FILE_NAME = FilenameUtils.removeExtension(file)
-				+ outputFileFormat;
-		ContentHandler handler = new ToXMLContentHandler();
-		// ContentHandler handler = new BodyContentHandler();
-		// ContentHandler handler = new BodyContentHandler(
-		// new ToXMLContentHandler());
-		InputStream stream = new FileInputStream(file);
-		AutoDetectParser parser = new AutoDetectParser();
-		Metadata metadata = new Metadata();
-		try {
-			parser.parse(stream, handler, metadata);
-			FileWriter htmlFileWriter = new FileWriter(OUTPUT_FILE_NAME);
-			htmlFileWriter.write(handler.toString());
-			htmlFileWriter.flush();
-			htmlFileWriter.close();
-			return new File(OUTPUT_FILE_NAME);
-		} finally {
-			stream.close();
-		}
-	}
+	
 
+	@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 	public static JSONObject loadGateAndAnnie(File file) throws GateException,
 			IOException {
 		
@@ -124,7 +82,7 @@ public class ResumeParserProgram {
 		// argument
 
 		Corpus corpus = Factory.newCorpus("Annie corpus");
-		String current = new File(".").getAbsolutePath();
+		
 		URL u = file.toURI().toURL();
 		FeatureMap params = Factory.newFeatureMap();
 		params.put("sourceUrl", u);
@@ -139,6 +97,7 @@ public class ResumeParserProgram {
 		annie.setCorpus(corpus);
 		annie.execute();
 
+		
 		Iterator iter = corpus.iterator();
 		JSONObject parsedJSON = new JSONObject();
 		Out.prln("Started parsing...");
@@ -285,33 +244,5 @@ public class ResumeParserProgram {
 		return parsedJSON;
 	}
 
-	public static void main(String[] args) {
-		if (args.length == 0) {
-			System.err
-					.println("USAGE: java ResumeParser <inputfile> <outputfile>");
-			return;
-		}
-		String inputFileName = args[0];
-		String outputFileName = (args.length == 2) ? args[1]
-				: "parsed_resume.json";
-
-		try {
-			File tikkaConvertedFile = parseToHTMLUsingApacheTikka(inputFileName);
-			if (tikkaConvertedFile != null) {
-				JSONObject parsedJSON = loadGateAndAnnie(tikkaConvertedFile);
-
-				Out.prln("Writing to output...");
-				FileWriter jsonFileWriter = new FileWriter(outputFileName);
-				jsonFileWriter.write(parsedJSON.toJSONString());
-				jsonFileWriter.flush();
-				jsonFileWriter.close();
-				Out.prln("Output written to file " + outputFileName);
-			}
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			System.out.println("Sad Face :( .Something went wrong.");
-			e.printStackTrace();
-		}
-	}
+	
 }
