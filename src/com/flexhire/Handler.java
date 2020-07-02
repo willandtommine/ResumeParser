@@ -147,9 +147,9 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 			
 			JSONObject parsedJSON = ResumeParserProgram.loadGateAndAnnie(temp);
 			System.out.println("just got some parsed Json");
-			System.out.println(parsedJSON.toJSONString());
+			System.out.println(clean(parsedJSON.toJSONString()));
 			
-			response.setBody(parsedJSON.toJSONString());
+			response.setBody(clean(parsedJSON.toJSONString()));
 			System.gc();
 			return response;
 
@@ -163,6 +163,62 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 		System.gc();
 		return response;
 
+	}
+
+	private String clean(String json2) {
+
+		
+		json2 = json2.replace("&amp;", " ");
+
+		json2 = json2.replace("\\u2022", "");
+		json2 = json2.replace("\\u2019", "");
+		json2 = json2.replace("$", " ");
+		json2 = json2.replace("\\n", "");
+		json2 = json2.replace("\\u2013", "-");
+		json2 = json2.replace("  ", " ");
+		json2 = json2.replace("\\u201C", '"'+"");
+		json2 = json2.replace("\\u201D", '"'+"");
+		json2 = json2.replace("\\/", " ");
+		int sIndex = 0;
+		int fIndex = 0;
+		while(json2.contains("<")) {
+			
+			
+			for(int i = 0;i<json2.length();i++) {
+				if(json2.charAt(i)=='<') {
+					sIndex = i;
+					break;
+				}
+				
+			}
+			
+			
+				
+			
+			
+			for(int i = sIndex;i<json2.length();i++) {
+				if(json2.charAt(i)=='>') {
+					fIndex = i;
+					break;
+				}
+				if(json2.charAt(i)=='}') {
+					json2 = json2.substring(0,i)+">"+json2.substring(i,json2.length());
+					fIndex = i;
+					break;
+				}
+			
+			}
+			
+			
+			
+			json2 = json2.substring(0, sIndex) + json2.substring(fIndex+1, json2.length());
+			
+			if(json2.length()>10000000) {
+				break;
+			}
+		}
+		
+		return json2;
 	}
 
 }
