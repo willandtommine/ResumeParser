@@ -19,7 +19,7 @@ import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent
 
 
 
-import com.amazonaws.AmazonServiceException;
+//import com.amazonaws.AmazonServiceException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -133,9 +133,6 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 				}
 			}
 
-		} catch (AmazonServiceException e) {
-			System.err.println(e.getErrorMessage());
-			System.exit(1);
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -183,7 +180,6 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 		int fIndex = 0;
 		while(json2.contains("<")) {
 			
-			
 			for(int i = 0;i<json2.length();i++) {
 				if(json2.charAt(i)=='<') {
 					sIndex = i;
@@ -191,10 +187,6 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 				}
 				
 			}
-			
-			
-				
-			
 			
 			for(int i = sIndex;i<json2.length();i++) {
 				if(json2.charAt(i)=='>') {
@@ -208,8 +200,6 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 				}
 			
 			}
-			
-			
 			
 			json2 = json2.substring(0, sIndex) + json2.substring(fIndex+1, json2.length());
 			
