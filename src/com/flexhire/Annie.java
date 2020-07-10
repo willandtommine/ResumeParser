@@ -35,7 +35,7 @@ public class Annie  {
     //File annieGapp = new File(anniePlugin, "C:\\Users\\antonydeepak\\Documents\\workspace\\Programming_Workspace\\project_workspace\\ResumeParser\\ResumeParser_git\\ResumeParser\\GATEFiles\\ANNIEResumeParser.gapp");
    System.out.println(homedir);
     File annieGapp = new File("ANNIEResumeParser.gapp");
-    System.out.println("Does this file Exist??? "+ annieGapp.exists());
+    //System.out.println("Does this file Exist??? "+ annieGapp.exists());
     annieController = (CorpusController) PersistenceManager.loadObjectFromFile(annieGapp);
 
     Out.prln("...processing engine loaded");

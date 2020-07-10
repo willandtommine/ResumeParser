@@ -1,46 +1,36 @@
 # ResumeParser
 
-How to build:
+# How to Build and Test Through AWS
 
-1. clone the repo
-2. cd into folder
-3. Build with mvn package shade:shade
+1. Generate .jar file
+- Run `mvn package shade:shade`
 
-
-Uploading to amazon:
 1. Create a new Lambda Function
-2. Add an S3 event for all object creations to the function
-3. Create a new S3 bucket (for testing adding all public permissions is helpful) making sure the region is the same for the function
-and the bucket.
+- Select Java 11 as the runtime
+- Create a new role from the following AWS policy templates
+    ~ `AWSLambdaFullAccess`
+    ~ `AmazonAPIGatewayInvokeFullAccess`
+    ~ `AmazonAPIGatewayPushToCloudWatchLogs`
+    ~ `CloudWatchFullAccess`
+    ~ `AmazonAPIGatewayAdministrator`
+- Edit Basic settings
+- Set memory to 3008 MB
+- Set Timeout to 30s
+- Set the Handler to `com.flexhire.Handler::handleRequest`
 
-Here are my S3 permissions:
-{
-    "Version": "2012-10-17",
-    "Id": "Policy1234567890123",
-    "Statement": [
-        {
-            "Sid": "Statement1",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:GetObject",
-            "Resource": "arn:aws:s3:::eastbuckettestwilliam/*"
-        },
-        {
-            "Sid": "Statement1",
-            "Effect": "Allow",
-            "Principal": "*",
-            "Action": "s3:PutObject",
-            "Resource": "arn:aws:s3:::eastbuckettestwilliam/*"
-        }
-    ]
-}
+1. Create a new Api
+- Add a trigger to your lambda function
+- select API Gateway
+- Select Create an API
+- Select REST API
+- Add `*/*` in Binary Media Types and click add
 
-4. In the lambda function basic settings increate the memory to 1024 mb and copy:
-code4goal.antony.resumeparser.Handler::handleRequest
-into the handler section. 
-5. Create a new custom role (click use existing role and then click the link to view the role) and add AmazonS3 Full Access policy to this role.
+1. Testing
+- Once the API is set up you can issue this curl command `curl --location --request PUT 'API_URL' \
+--header 'Content-Type: application/pdf' \
+--data-binary '@RESUME_FILE_PATH'`
 
-How to test:
-1. Upload .jar file generated in the target folder to the function through S3
-2. Upload a file to parsed into the S3 bucket associated with the function.
+# JSON
+
+Currently the program can return data into five different categories. These categories include: Basic information, summary, education, skills, and work experience. Each of these can have sub categories like "date start" or "Job title"
 

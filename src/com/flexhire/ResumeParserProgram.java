@@ -5,7 +5,7 @@ import static gate.Utils.*;
 import java.io.File;
 
 import java.io.IOException;
-
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -32,9 +32,8 @@ public class ResumeParserProgram {
 	@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 	public static JSONObject loadGateAndAnnie(File file) throws GateException,
 			IOException {
-		
 		File f = new File(".");
-		System.out.print(f.getAbsolutePath());
+		
 		
 		
 		if (Gate.getPluginsHome() == null) {
@@ -55,7 +54,12 @@ public class ResumeParserProgram {
 				if(g.getAbsolutePath().contains("plugins")) {
 					for(File h:g.listFiles()) {
 						if(h.getAbsolutePath().contains("ANNIE")) {
-							Gate.setBuiltinCreoleDir(h.toURI().toURL());
+							try {
+								Gate.setBuiltinCreoleDir(h.toURI().toURL());
+							} catch (MalformedURLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 					}
 				}
@@ -65,8 +69,6 @@ public class ResumeParserProgram {
 		}
 		
 		
-		
-		//BasicConfigurator.configure();
 		Gate.init();
 		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/ANNIE/"));
 		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/Keyphrase_Extraction_Algorithm/"));
@@ -74,7 +76,10 @@ public class ResumeParserProgram {
 		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/DocumentNormalizer/"));
 		Gate.getCreoleRegister().registerDirectories(new URL("file:/var/task/plugins/Crowd_Sourcing/"));
 		
+		//BasicConfigurator.configure();
+		
 		// initialise ANNIE (this may take several minutes)
+		
 		Annie annie = new Annie();
 		annie.initAnnie();
 		
@@ -174,8 +179,7 @@ public class ResumeParserProgram {
 
 			// awards,credibility,education_and_training,extracurricular,misc,skills,summary
 			String[] otherSections = new String[] { "summary",
-					"education_and_training", "skills", "accomplishments",
-					"awards", "credibility", "extracurricular", "misc" };
+					"education_and_training", "skills"};
 			for (String otherSection : otherSections) {
 				curAnnSet = defaultAnnotSet.get(otherSection);
 				it = curAnnSet.iterator();
@@ -201,6 +205,7 @@ public class ResumeParserProgram {
 
 			// work_experience
 			curAnnSet = defaultAnnotSet.get("work_experience");
+			
 			it = curAnnSet.iterator();
 			JSONArray workExperiences = new JSONArray();
 			while (it.hasNext()) {
@@ -208,6 +213,7 @@ public class ResumeParserProgram {
 				currAnnot = (Annotation) it.next();
 				String key = (String) currAnnot.getFeatures().get(
 						"sectionHeading");
+				
 				if (key.equals("work_experience_marker")) {
 					// JSONObject details = new JSONObject();
 					String[] annotations = new String[] { "date_start",
@@ -215,6 +221,7 @@ public class ResumeParserProgram {
 					for (String annotation : annotations) {
 						String v = (String) currAnnot.getFeatures().get(
 								annotation);
+						
 						if (!StringUtils.isBlank(v)) {
 							// details.put(annotation, v);
 							workExperience.put(annotation, v);
