@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
+
 import org.apache.commons.codec.binary.Base64;
 
 import org.apache.tika.exception.TikaException;
@@ -33,7 +34,6 @@ import org.apache.tika.sax.ToXMLContentHandler;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
-
 
 
 import gate.util.GateException;
@@ -46,10 +46,12 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 		APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
 		
 		
+		
+		
 		byte[] bI = Base64.decodeBase64(event.getBody().getBytes());
 		
 		
-		System.out.println("first line, 2:57");
+		
 
 		File storage = new File("../.././tmp/store.txt");
 		if(storage.exists()) {
@@ -76,7 +78,7 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 			 
 			OutputStream os = new FileOutputStream(storage);
             os.write(bI);
-            System.out.println("Write bytes to file.");
+           
             
             os.close();
         } catch (Exception e) {
@@ -143,7 +145,7 @@ public class Handler implements RequestHandler<APIGatewayProxyRequestEvent, APIG
 
 			
 			JSONObject parsedJSON = ResumeParserProgram.loadGateAndAnnie(temp);
-			System.out.println("just got some parsed Json");
+			
 			System.out.println(clean(parsedJSON.toJSONString()));
 			
 			response.setBody(clean(parsedJSON.toJSONString()));
